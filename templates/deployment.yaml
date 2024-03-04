@@ -8,6 +8,10 @@ spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
+  strategy:
+    type: "RollingUpdate"
+    rollingUpdate:
+      maxUnavailable: {{ .Values.maxUnavailable }}
   selector:
     matchLabels:
       {{- include "test.selectorLabels" . | nindent 6 }}
@@ -40,6 +44,14 @@ spec:
             - name: http
               containerPort: {{ .Values.service.port }}
               protocol: TCP
+          command:
+            - /bin/sh
+            - -c
+            - |
+              set -ex
+              echo random: {{ randAlphaNum 5 }}
+              sleep 10s
+              exec nginx -g "daemon off;"
           livenessProbe:
             {{- toYaml .Values.livenessProbe | nindent 12 }}
           readinessProbe:

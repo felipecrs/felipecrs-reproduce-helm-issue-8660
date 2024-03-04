@@ -71,11 +71,14 @@ resources: {}
   #   cpu: 100m
   #   memory: 128Mi
 
+maxUnavailable: 1
+
 livenessProbe:
   httpGet:
     path: /
     port: http
 readinessProbe:
+  initialDelaySeconds: 10
   httpGet:
     path: /
     port: http
