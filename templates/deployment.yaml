@@ -12,6 +12,7 @@ spec:
     type: "RollingUpdate"
     rollingUpdate:
       maxUnavailable: {{ .Values.maxUnavailable }}
+      maxSurge: {{ .Values.maxSurge }}
   selector:
     matchLabels:
       {{- include "test.selectorLabels" . | nindent 6 }}
